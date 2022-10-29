@@ -25,9 +25,9 @@ const NUMBER_PRECISION = 2;
 // }
 
 const MOCK_DATE = {
-    billingSheetNames: 'Lao, Calixte',
+    billingSheetNames: 'Smith, John',
     billingSheetAmounts: '200',
-    operaNames : 'Lao,Calixte,Mr',
+    operaNames : 'Smith, John,Mr',
     operaAmounts: '200'
 }
 
