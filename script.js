@@ -48,6 +48,16 @@ const removeWhiteSpaces = (someString) => {
     return result;
 };
 
+const clearUpList = (list) => {
+    for (let i = 0; i < list.length; i++) {
+        if (list[i] === undefined) {
+            list.splice(i,1);
+            i--;
+        }
+    }
+    return list
+};
+
 const separateInputIntoArray = (inputEntries) => {
     let entry = '';
     let result = [];
@@ -128,13 +138,17 @@ const checkIfAnagrams = (nameOne, nameTwo) => {
     for (let i = 0; i < nameOneIntoArray.length; i++) {
         for (let t = 0; t < nameTwoIntoArray.length; t++) {
             if (nameOneIntoArray[i] === nameTwoIntoArray[t]) {
-                nameOneIntoArray.splice(i,1);
-                nameTwoIntoArray.splice(t,1);
-                i--;
-                t--;
+                // nameOneIntoArray.splice(i,1);
+                // nameTwoIntoArray.splice(t,1);
+                // i--;
+                // t--;
+                delete nameOneIntoArray[i];
+                delete nameTwoIntoArray[t];
             }
         }
     }
+    clearUpList(nameOneIntoArray);
+    clearUpList(nameTwoIntoArray);
     if (nameOneIntoArray.length === 0 && nameTwoIntoArray.length === 0) {
         return true;
     }
@@ -143,29 +157,43 @@ const checkIfAnagrams = (nameOne, nameTwo) => {
 const eliminateAnagrams = (listOne, listTwo) => {
     for (let i = 0; i < listOne.length; i++) {
         for (let t = 0; t < listTwo.length; t++) {
-            if (checkIfAnagrams(listOne[i].name, listTwo[t].name)) {
+            if (listOne[i] && listTwo[t]) {
+                if (checkIfAnagrams(listOne[i].name, listTwo[t].name)) {
                 if (listOne[i].amount === listTwo[t].amount) {
-                    listOne.splice(i, 1);
-                    listTwo.splice(t,1);
+                    // listOne.splice(i, 1);
+                    // listTwo.splice(t,1);
+                    delete listOne[i];
+                    delete listTwo[t];
                 }
             }
+            }
+            
             
         }
     }
+    clearUpList(listOne);
+    clearUpList(listTwo);
 };
 
 const eliminateExactMatches = (listOne, listTwo) => {
     for (let i = 0; i < listOne.length; i++) {
         for (let t = 0; t < listTwo.length; t++) {
-            if (listOne[i].name === listTwo[t].name) {
+            if (listOne[i] && listTwo[t]) {
+                if (listOne[i].name === listTwo[t].name) {
                 if (listOne[i].amount === listTwo[t].amount) {
-                    listOne.splice(i, 1);
-                    listTwo.splice(t,1);
+                    // listOne.splice(i, 1);
+                    // listTwo.splice(t,1);
+                    delete listOne[i];
+                    delete listTwo[t];
                 }
             }
+            }
+            
             
         }
     }
+    clearUpList(listOne);
+    clearUpList(listTwo);
 };
 
 const showExactMatchesWithDifferentAmounts = (listOne, listTwo) => {
@@ -202,16 +230,21 @@ const checkForCloseMatch = (nameOne, nameTwo, precisionLevel) => {
     for (let i = 0; i < nameOneIntoArray.length; i++) {
         for (let t = 0; t < nameTwoIntoArray.length; t++) {
             if (nameOneIntoArray[i] === nameTwoIntoArray[t]) {
-                nameOneIntoArray.splice(i,1);
-                nameTwoIntoArray.splice(t,1);
-                i--;
-                t--;
+                // nameOneIntoArray.splice(i,1);
+                // nameTwoIntoArray.splice(t,1);
+                // i--;
+                // t--;
+                delete nameOneIntoArray[i];
+                delete nameTwoIntoArray[t];
             }
         }
     }
+    clearUpList(nameOneIntoArray);
+    clearUpList(nameTwoIntoArray);
     console.log(nameOneIntoArray, nameTwoIntoArray);
     console.log((nameOneIntoArray.length + nameTwoIntoArray.length));
     if ((nameOneIntoArray.length + nameTwoIntoArray.length) <= Number(precisionLevel)){
+        console.log('libba');
         return true;
     }
 };
@@ -221,13 +254,17 @@ const eliminateCloseMatches = (listOne, listTwo) => {
         for (let t = 0; t < listTwo.length; t++) {
             if (checkForCloseMatch(listOne[i].name, listTwo[t].name, precisionLevelSettingInputElement.value)) {
                 if (listOne[i].amount === listTwo[t].amount) {
-                    listOne.splice(i, 1);
-                    listTwo.splice(t,1);
+                    // listOne.splice(i, 1);
+                    // listTwo.splice(t,1);
+                    delete listOne[i];
+                    delete listTwo[t];
                 }
             }
             
         }
     }
+    clearUpList(listOne);
+    clearUpList(listTwo);
 };
 
 const showExtraEntries = (listOne, listTwo) => {
@@ -265,6 +302,14 @@ button.addEventListener('click', () => {
 
     compareEntries(billingSheetEntries, operaEntries);
 });
+
+const sampleList = [1,2,3,4,5,6,7,8,9,10];
+delete sampleList[3];
+delete sampleList[5];
+delete sampleList[7]; 
+delete sampleList[9];
+
+console.log(clearUpList(sampleList));
 
 createMockData();
 // checkForCloseMatch('elene', 'anna', precisionLevelSettingInputElement.value);
