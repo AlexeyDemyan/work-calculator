@@ -12,12 +12,14 @@ const outputElement = document.querySelector('.output');
 const outputTextElement = outputElement.querySelector('p');
 
 const button = document.querySelector('.lets-go');
+const closeMatchesFilterButton = document.querySelector('.close-matches-filter');
+const precisionLevelSettingInputElement = document.querySelector('.precision-level-setting');
 
 const NUMBER_PRECISION = 2;
 
 const MOCK_DATE = {
-    billingSheetNames: 'John Smith \nJohn Satmos \nElena Libba \nElenalibba',
-    billingSheetAmounts: '300 \n230.3333 \n1000 \n1000',
+    billingSheetNames: 'John Smith \nJohn Statmos \nElena Libba \nElenalibba',
+    billingSheetAmounts: '300 \n400.00 \n1000 \n1000',
     operaNames : 'Libba Elena \nJohn Stamos \nJohn Smith \nelenalibba',
     operaAmounts: '1000 \n400 \n300.00 \n1000'
 }
@@ -30,7 +32,10 @@ const createMockData = () => {
 };
 
 const showErrorMessage = (message) => {
-    outputTextElement.textContent = outputTextElement.textContent + message;
+    const messageElement = document.createElement('p');
+    messageElement.textContent = message;
+    outputElement.appendChild(messageElement);
+    // outputTextElement.textContent = outputTextElement.textContent + message;
 };
 
 const removeWhiteSpaces = (someString) => {
@@ -76,7 +81,7 @@ const checkForErrors = (names, amounts, errorArea) => {
 };
 
 const clearOutputArea = () => {
-    outputTextElement.textContent = '';
+    outputElement.textContent = '';
 };
 
 const createEntries = (names, amounts) => {
@@ -118,19 +123,19 @@ const createOperaEntries = () => {
 };
 
 const checkIfAnagrams = (nameOne, nameTwo) => {
-    const nameOneInArray = Array.from(nameOne);
-    const nameTwoInArray = Array.from(nameTwo);
-    for (let i = 0; i < nameOneInArray.length; i++) {
-        for (let t = 0; t < nameTwoInArray.length; t++) {
-            if (nameOneInArray[i] === nameTwoInArray[t]) {
-                nameOneInArray.splice(i,1);
-                nameTwoInArray.splice(t,1);
+    const nameOneIntoArray = Array.from(nameOne);
+    const nameTwoIntoArray = Array.from(nameTwo);
+    for (let i = 0; i < nameOneIntoArray.length; i++) {
+        for (let t = 0; t < nameTwoIntoArray.length; t++) {
+            if (nameOneIntoArray[i] === nameTwoIntoArray[t]) {
+                nameOneIntoArray.splice(i,1);
+                nameTwoIntoArray.splice(t,1);
                 i--;
                 t--;
             }
         }
     }
-    if (nameOneInArray.length === 0 && nameTwoInArray.length === 0) {
+    if (nameOneIntoArray.length === 0 && nameTwoIntoArray.length === 0) {
         return true;
     }
 };
@@ -191,11 +196,58 @@ const showAnagramsWithDifferentAmounts = (listOne, listTwo) => {
     }
 };
 
+const checkForCloseMatch = (nameOne, nameTwo, precisionLevel) => {
+    const nameOneIntoArray = Array.from(nameOne);
+    const nameTwoIntoArray = Array.from(nameTwo);
+    for (let i = 0; i < nameOneIntoArray.length; i++) {
+        for (let t = 0; t < nameTwoIntoArray.length; t++) {
+            if (nameOneIntoArray[i] === nameTwoIntoArray[t]) {
+                nameOneIntoArray.splice(i,1);
+                nameTwoIntoArray.splice(t,1);
+                i--;
+                t--;
+            }
+        }
+    }
+    console.log(nameOneIntoArray, nameTwoIntoArray);
+    console.log((nameOneIntoArray.length + nameTwoIntoArray.length));
+    if ((nameOneIntoArray.length + nameTwoIntoArray.length) <= Number(precisionLevel)){
+        return true;
+    }
+};
+
+const eliminateCloseMatches = (listOne, listTwo) => {
+    for (let i = 0; i < listOne.length; i++) {
+        for (let t = 0; t < listTwo.length; t++) {
+            if (checkForCloseMatch(listOne[i].name, listTwo[t].name, precisionLevelSettingInputElement.value)) {
+                if (listOne[i].amount === listTwo[t].amount) {
+                    listOne.splice(i, 1);
+                    listTwo.splice(t,1);
+                }
+            }
+            
+        }
+    }
+};
+
+const showExtraEntries = (listOne, listTwo) => {
+    for (let i = 0; i < listOne.length; i++) {
+        showErrorMessage(`Extra entry from Billing Sheet: ${listOne[i].name} with amount of ${listOne[i].amount}`);
+    };
+    for (let i = 0; i < listTwo.length; i++) {
+        showErrorMessage(`Extra entry from Opera: ${listTwo[i].name} with amount of ${listTwo[i].amount}`);
+    }
+};
+
 const compareEntries = (billingSheetEntries, operaEntries) => {
     eliminateExactMatches(billingSheetEntries, operaEntries);
     eliminateAnagrams(billingSheetEntries, operaEntries);
     showExactMatchesWithDifferentAmounts(billingSheetEntries, operaEntries);
     showAnagramsWithDifferentAmounts(billingSheetEntries, operaEntries);
+    if (closeMatchesFilterButton.checked) {
+        eliminateCloseMatches(billingSheetEntries, operaEntries, precisionLevelSettingInputElement.value);
+    }
+    showExtraEntries(billingSheetEntries, operaEntries);
     console.log(billingSheetEntries);
     console.log(operaEntries);
     for (let i = 0; i < billingSheetEntries.length; i++) {
@@ -215,6 +267,7 @@ button.addEventListener('click', () => {
 });
 
 createMockData();
+// checkForCloseMatch('elene', 'anna', precisionLevelSettingInputElement.value);
 // checkIfAnagrams(['e', 'l', 'e', 'n'], ['e', 'l', 'e', 'n']);
 
 // const compareTwoArrays = (arrayOne, arrayTwo) => {
