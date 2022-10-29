@@ -13,15 +13,22 @@ const operaNamesInputArea = operaNamesElement.querySelector('.input-field');
 const operaAmountsInputArea = operaAmountsElement.querySelector('.input-field');
 
 const outputElement = document.querySelector('.output');
-const outputTextElement = outputElement.querySelector('p');
 
 const button = document.querySelector('.lets-go');
-const closeMatchesFilterButton = document.querySelector(
-  '.close-matches-filter'
+// const closeMatchesFilterButton = document.querySelector(
+//   '.close-matches-filter'
+// );
+
+const closeMatchesFilterButtonWrapper = document.querySelector('.button-wrapper');
+
+const closeMatchesFilterButton = closeMatchesFilterButtonWrapper.querySelector(
+  '.checkbox-button'
 );
+
 const precisionLevelSettingInputElement = document.querySelector(
   '.precision-level-setting'
 );
+
 
 const NUMBER_PRECISION = 2;
 
@@ -39,6 +46,18 @@ const MOCK_DATE = {
   operaAmounts: '200',
 };
 
+let closeMatchesFilterOn = false;
+
+closeMatchesFilterButtonWrapper.addEventListener('click', () => {
+  if (closeMatchesFilterButton.classList.contains("switchedOn")) {
+    closeMatchesFilterButton.classList.remove("switchedOn");
+    closeMatchesFilterButtonWrapper.classList.remove('painted');
+  } else {
+    closeMatchesFilterButton.classList.add("switchedOn");
+    closeMatchesFilterButtonWrapper.classList.add('painted');
+  }
+}); 
+
 const createMockData = () => {
   billingSheetNamesInputArea.value = MOCK_DATE.billingSheetNames;
   billingSheetAmountsInputArea.value = MOCK_DATE.billingSheetAmounts;
@@ -50,7 +69,6 @@ const showErrorMessage = (message) => {
   const messageElement = document.createElement('p');
   messageElement.textContent = message;
   outputElement.appendChild(messageElement);
-  // outputTextElement.textContent = outputTextElement.textContent + message;
 };
 
 const removeWhiteSpaces = (someString) => {
@@ -77,6 +95,16 @@ const removeAsterisk = (someString) => {
   let result = '';
   for (let i = 0; i < someString.length; i++) {
     if (someString[i] !== '*') {
+      result += someString[i];
+    }
+  }
+  return result;
+};
+
+const removeDigits = (someString) => {
+  let result = '';
+  for (let i = 0; i < someString.length; i++) {
+    if (!'0123456789'.includes(someString[i])) {
       result += someString[i];
     }
   }
@@ -127,6 +155,7 @@ const clearUpName = (name) => {
   result = removeAsterisk(result);
   result = removeFemaleSalutation(result);
   result = removeMaleSalutation(result);
+  result = removeDigits(result);
   result = removeWhiteSpaces(result);
   return result;
 };
@@ -383,7 +412,7 @@ const compareEntries = (billingSheetEntries, operaEntries) => {
   eliminateAnagrams(billingSheetEntries, operaEntries);
   showExactMatchesWithDifferentAmounts(billingSheetEntries, operaEntries);
   showAnagramsWithDifferentAmounts(billingSheetEntries, operaEntries);
-  if (closeMatchesFilterButton.checked) {
+  if (closeMatchesFilterButton.classList.contains("switchedOn")) {
     eliminateCloseMatches(
       billingSheetEntries,
       operaEntries,

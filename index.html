@@ -5,9 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Comparison tool</title>
+    <!-- <link rel="preload" href="fonts/exo2-regular.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="fonts/exo2-semibold.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="fonts/exo2-bold.woff2" as="font" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <header class="header">
+      <div class="container">
+        <span class="header__logo">
+          <img src="/corinthia-group-logo-dark.png" alt="logo">
+        </span>
+      </div>
+    </header>
     <div class="main-container">
       <div class="input-container">
         <div class="billing-sheet-names">
@@ -15,7 +25,7 @@
           <textarea
             name="text"
             id="text"
-            cols="50"
+            cols="45"
             rows="40"
             class="input-field"
           ></textarea>
@@ -33,16 +43,19 @@
         <div class="button-container">
           <button class="lets-go">Let's go!</button><br>
           <p>Find Close Matches</p> 
-          <input type="checkbox" class="close-matches-filter">
+          <div class="button-wrapper">
+            <input type="checkbox" class="close-matches-filter" hidden>
+            <div class="checkbox-button"></div>
+          </div>
           <p>Precision Level</p>
-          <input type="number" class="precision-level-setting" value="1">
+          <input type="number" class="precision-level-setting" value="1" min="1">
         </div>
         <div class="opera-names">
           <p class="input-field-title">Opera Names</p>
           <textarea
             name="text"
             id="text"
-            cols="50"
+            cols="45"
             rows="40"
             class="input-field"
           ></textarea>
@@ -60,12 +73,17 @@
       </div>
       <div class="output-container">
         <div class="output">
-            <p>
-                
-            </p>
         </div>
       </div>
     </div>
+    
+    <footer class="footer">
+        <div class="container">
+          <span class="header__logo">
+            <img src="/corinthia-group-logo-dark.png" alt="logo">
+          </span>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
   </body>
