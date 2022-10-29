@@ -17,11 +17,18 @@ const precisionLevelSettingInputElement = document.querySelector('.precision-lev
 
 const NUMBER_PRECISION = 2;
 
+// const MOCK_DATE = {
+//     billingSheetNames: 'John Smith \nJohn Statmos \nElena Libba \nElenalibba',
+//     billingSheetAmounts: '300 \n400.00 \n1000 \n1000',
+//     operaNames : 'Libba Elena \nJohn Stamos \nJohn Smith \nelenalibba',
+//     operaAmounts: '1000 \n400 \n300.00 \n1000'
+// }
+
 const MOCK_DATE = {
-    billingSheetNames: 'John Smith \nJohn Statmos \nElena Libba \nElenalibba',
-    billingSheetAmounts: '300 \n400.00 \n1000 \n1000',
-    operaNames : 'Libba Elena \nJohn Stamos \nJohn Smith \nelenalibba',
-    operaAmounts: '1000 \n400 \n300.00 \n1000'
+    billingSheetNames: 'Lao, Calixte',
+    billingSheetAmounts: '200',
+    operaNames : 'Lao,Calixte,Mr',
+    operaAmounts: '200'
 }
 
 const createMockData = () => {
@@ -46,6 +53,65 @@ const removeWhiteSpaces = (someString) => {
         }
     }
     return result;
+};
+
+const removeCommas = (someString) => {
+    let result = '';
+    for (let i = 0; i < someString.length; i++) {
+        if (someString[i] !== ',') {
+            result += someString[i];
+        }
+    }
+    return result;
+};
+
+const removeAsterisk = (someString) => {
+    let result = '';
+    for (let i = 0; i < someString.length; i++) {
+        if (someString[i] !== '*') {
+            result += someString[i];
+        }
+    }
+    return result;
+};
+
+const removeMaleSalutation = (someString) => {
+    let result = '';
+    let someStringIntoArray = Array.from(someString);
+    for (let i = 0; i < someStringIntoArray.length; i++) {
+        if (someStringIntoArray[i] === 'm' && someStringIntoArray[i + 1] === 'r') {
+            someStringIntoArray[i] = ' ';
+            someStringIntoArray[i+1] = ' ';
+        }
+        result += someStringIntoArray[i];
+    }
+    return result;
+};
+
+const removeFemaleSalutation = (someString) => {
+    let result = '';
+    let someStringIntoArray = Array.from(someString);
+    for (let i = 0; i < someStringIntoArray.length; i++) {
+        if (someStringIntoArray[i] === 'm' && someStringIntoArray[i+1] === 'r' && someStringIntoArray[i+2] === 's') {
+            someStringIntoArray[i] = ' ';
+            someStringIntoArray[i+1] = ' ';
+            someStringIntoArray[i+2] = ' ';
+            result += someStringIntoArray[i];
+        }
+        else {
+            result += someStringIntoArray[i];
+        }
+    }
+    return result;
+};
+
+const clearUpName = (name) => {
+    let result = removeCommas(name);
+    result = removeAsterisk(result);
+    result = removeMaleSalutation(result);
+    result = removeFemaleSalutation(result);
+    result = removeWhiteSpaces(result);
+    return result
 };
 
 const clearUpList = (list) => {
@@ -98,7 +164,7 @@ const createEntries = (names, amounts) => {
     const entries = [];
     for (let i = 0; i < names.length; i++) {
         const entry = {
-            name: removeWhiteSpaces(names[i].toLowerCase()),
+            name: clearUpName(names[i].toLowerCase()),
             amount: Number(amounts[i]).toFixed(NUMBER_PRECISION),
         };
         entries.push(entry);
@@ -241,8 +307,8 @@ const checkForCloseMatch = (nameOne, nameTwo, precisionLevel) => {
     }
     clearUpList(nameOneIntoArray);
     clearUpList(nameTwoIntoArray);
-    console.log(nameOneIntoArray, nameTwoIntoArray);
-    console.log((nameOneIntoArray.length + nameTwoIntoArray.length));
+    // console.log(nameOneIntoArray, nameTwoIntoArray);
+    // console.log((nameOneIntoArray.length + nameTwoIntoArray.length));
     if ((nameOneIntoArray.length + nameTwoIntoArray.length) <= Number(precisionLevel)){
         console.log('libba');
         return true;
@@ -303,15 +369,8 @@ button.addEventListener('click', () => {
     compareEntries(billingSheetEntries, operaEntries);
 });
 
-const sampleList = [1,2,3,4,5,6,7,8,9,10];
-delete sampleList[3];
-delete sampleList[5];
-delete sampleList[7]; 
-delete sampleList[9];
-
-console.log(clearUpList(sampleList));
-
 createMockData();
+
 // checkForCloseMatch('elene', 'anna', precisionLevelSettingInputElement.value);
 // checkIfAnagrams(['e', 'l', 'e', 'n'], ['e', 'l', 'e', 'n']);
 
