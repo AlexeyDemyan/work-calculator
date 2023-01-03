@@ -452,8 +452,6 @@ button.addEventListener('click', () => {
 
 createMockData();
 
-checkForSharers('libba&');
-
 // checkForCloseMatch('elene', 'anna', precisionLevelSettingInputElement.value);
 // checkIfAnagrams(['e', 'l', 'e', 'n'], ['e', 'l', 'e', 'n']);
 
@@ -480,3 +478,4 @@ checkForSharers('libba&');
 // const two = ['e', 'l', 'e', 'n'];
 
 // compareTwoArrays(one, two);
+

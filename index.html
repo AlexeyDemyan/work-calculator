@@ -12,14 +12,20 @@
   </head>
   <body>
     <header class="header">
-      <div class="container">
         <span class="header__logo">
           <img src="/corinthia-group-logo-dark.png" alt="logo">
         </span>
-      </div>
     </header>
-    <div class="main-container">
-      <div class="input-container">
+    <div class="container main-container">
+      <div class="container invoice-numbers-container">
+        <input type="text">
+        <button>Ascending</button>
+        <p>Count</p>
+        <input type="number" class="" value="1" min="1">
+      </div>
+      <div class="container invoice-number-output">
+      </div>
+      <div class="container input-container">
         <div class="billing-sheet-names">
           <p class="input-field-title">Billng Sheet Names</p>
           <textarea
@@ -71,18 +77,16 @@
           ></textarea>
         </div>
       </div>
-      <div class="output-container">
+      <div class="container output-container">
         <div class="output">
         </div>
       </div>
     </div>
     
     <footer class="footer">
-        <div class="container">
           <span class="header__logo">
             <img src="/corinthia-group-logo-dark.png" alt="logo">
           </span>
-        </div>
     </footer>
 
     <script src="script.js"></script>
