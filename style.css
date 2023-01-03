@@ -92,6 +92,7 @@ textarea {
     margin-bottom: 10px;
     padding: 10px 0 0 10px;
     background-color: #f2f4f8;
+    /* border: 2px solid #10a9a0; */
 }
 
 .output {

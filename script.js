@@ -15,9 +15,6 @@ const operaAmountsInputArea = operaAmountsElement.querySelector('.input-field');
 const outputElement = document.querySelector('.output');
 
 const button = document.querySelector('.lets-go');
-// const closeMatchesFilterButton = document.querySelector(
-//   '.close-matches-filter'
-// );
 
 const closeMatchesFilterButtonWrapper = document.querySelector('.button-wrapper');
 
@@ -31,13 +28,6 @@ const precisionLevelSettingInputElement = document.querySelector(
 
 
 const NUMBER_PRECISION = 2;
-
-// const MOCK_DATE = {
-//     billingSheetNames: 'John Smith \nJohn Statmos \nElena Libba \nElenalibba',
-//     billingSheetAmounts: '300 \n400.00 \n1000 \n1000',
-//     operaNames : 'Libba Elena \nJohn Stamos \nJohn Smith \nelenalibba',
-//     operaAmounts: '1000 \n400 \n300.00 \n1000'
-// }
 
 const MOCK_DATE = {
   billingSheetNames: 'Demyanov, Alexey & Borsato, Elena',
@@ -407,6 +397,27 @@ const showExtraEntries = (listOne, listTwo) => {
   }
 };
 
+const showCloseMatchesWithDifferentAmounts = (listOne, listTwo, precisionLevel) => {
+  for (let i = 0; i < listOne.length; i++) {
+    for (let t = 0; t < listTwo.length; t++) {
+      if (checkForCloseMatch(
+        listOne[i].name,
+        listTwo[t].name,
+        precisionLevel
+      )) {
+        if (listOne[i].amount !== listTwo[t].amount) {
+          showErrorMessage(
+            `${listOne[i].name} has rate of ${listOne[i].amount} on Billing Sheet, while ${listTwo[t].name} has amount of ${listTwo[t].amount} on Opera`
+          );
+          console.log(
+            `${listOne[i].name} has rate of ${listOne[i].amount} on Billing Sheet, while ${listTwo[t].name} has amount of ${listTwo[t].amount} on Opera`
+          );
+        }
+      }
+    }
+  }
+};
+
 const compareEntries = (billingSheetEntries, operaEntries) => {
   eliminateExactMatches(billingSheetEntries, operaEntries);
   eliminateAnagrams(billingSheetEntries, operaEntries);
@@ -418,6 +429,7 @@ const compareEntries = (billingSheetEntries, operaEntries) => {
       operaEntries,
       precisionLevelSettingInputElement.value
     );
+    // showCloseMatchesWithDifferentAmounts(listOne, listTwo, precisionLevelSettingInputElement.value)
   }
   showExtraEntries(billingSheetEntries, operaEntries);
   console.log(billingSheetEntries);
