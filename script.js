@@ -14,7 +14,7 @@ const operaAmountsInputArea = operaAmountsElement.querySelector('.input-field');
 
 const outputElement = document.querySelector('.output');
 
-const button = document.querySelector('.lets-go');
+const letsGoButton = document.querySelector('.lets-go');
 
 const closeMatchesFilterButtonWrapper = document.querySelector('.button-wrapper');
 
@@ -26,6 +26,9 @@ const precisionLevelSettingInputElement = document.querySelector(
   '.precision-level-setting'
 );
 
+const invoiceNumbersElement = document.querySelector('.invoice-numbers-container');
+const invoiceNumbersInptuaArea = invoiceNumbersElement.querySelector('.input-field');
+const convertButton = invoiceNumbersElement.querySelector('.convert');
 
 const NUMBER_PRECISION = 2;
 
@@ -442,13 +445,19 @@ const compareEntries = (billingSheetEntries, operaEntries) => {
   }
 };
 
-button.addEventListener('click', () => {
+letsGoButton.addEventListener('click', () => {
   clearOutputArea();
   const billingSheetEntries = createBillingSheetEntries();
   const operaEntries = createOperaEntries();
 
   compareEntries(billingSheetEntries, operaEntries);
 });
+
+const convertStringToInvoiceNumber = () => {
+  console.log(invoiceNumbersInptuaArea.value);
+}
+
+convertButton.addEventListener('click', convertStringToInvoiceNumber);
 
 createMockData();
 
